@@ -1,4 +1,3 @@
 package br.com.challenge.employee_checkin.dto;
 
-public record CheckResponse() {
-}
+public record CheckResponse(boolean success) {}

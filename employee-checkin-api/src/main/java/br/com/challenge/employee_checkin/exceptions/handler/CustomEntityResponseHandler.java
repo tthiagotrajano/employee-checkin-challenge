@@ -1,9 +1,9 @@
-package br.com.erudio.exception.handler;
+package br.com.challenge.employee_checkin.exceptions.handler;
 
-import br.com.erudio.exception.ExceptionResponse;
-import br.com.erudio.exception.RequiredObjectsIsNullException;
-import br.com.erudio.exception.ResourceNotFoundException;
-import br.com.erudio.exception.UnsupportedMathOperationException;
+import br.com.challenge.employee_checkin.exceptions.ConflictException;
+import br.com.challenge.employee_checkin.exceptions.ExceptionResponse;
+import br.com.challenge.employee_checkin.exceptions.NotFoundException;
+import br.com.challenge.employee_checkin.exceptions.UnauthorizedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -20,22 +20,29 @@ public class CustomEntityResponseHandler extends ResponseEntityExceptionHandler 
 
     @ExceptionHandler(Exception.class)
     public final ResponseEntity<ExceptionResponse> handleAllExceptions(Exception ex, WebRequest request) {
-        ExceptionResponse  response = new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
+        ExceptionResponse response = new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
 
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(RequiredObjectsIsNullException.class)
-    public final ResponseEntity<ExceptionResponse> handleBadRequestExceptions(Exception ex, WebRequest request) {
-        ExceptionResponse  response = new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
-
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public final ResponseEntity<ExceptionResponse> handleNotFoundExceptions(Exception ex, WebRequest request) {
-        ExceptionResponse  response = new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
+    @ExceptionHandler(NotFoundException.class)
+    public final ResponseEntity<ExceptionResponse> notFoundExceptions(Exception ex, WebRequest request) {
+        ExceptionResponse response = new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
 
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ConflictException.class)
+    public final ResponseEntity<ExceptionResponse> conflictException(Exception ex, WebRequest request) {
+        ExceptionResponse response = new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
+
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    public final ResponseEntity<ExceptionResponse> unauthorizedException(Exception ex, WebRequest request) {
+        ExceptionResponse response = new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
+
+        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
 }

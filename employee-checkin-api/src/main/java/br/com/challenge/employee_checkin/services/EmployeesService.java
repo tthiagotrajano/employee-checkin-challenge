@@ -1,29 +1,32 @@
 package br.com.challenge.employee_checkin.services;
 
-import br.com.challenge.employee_checkin.ResourceNotFoundException;
+import br.com.challenge.employee_checkin.exceptions.NotFoundException;
 import br.com.challenge.employee_checkin.dto.LoginRequest;
 import br.com.challenge.employee_checkin.dto.LoginResponse;
-import br.com.challenge.employee_checkin.repositories.EmployeeRepository;
+import br.com.challenge.employee_checkin.repositories.EmployeesRepository;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.logging.Logger;
 
 @Service
-public class EmployeeService {
+public class EmployeesService {
 
     @Autowired
-    private EmployeeRepository employeeRepository;
+    private EmployeesRepository employeesRepository;
 
-    private Logger logger = Logger.getLogger(EmployeeService.class.getName());
+    private Logger logger = Logger.getLogger(EmployeesService.class.getName());
 
-    public LoginResponse login(LoginRequest loginRequest) {
-        var employee = employeeRepository.findByEmail(loginRequest.email())
-                .orElseThrow(() -> new ResourceNotFoundException("Email or password invalid."));
+    public LoginResponse login(LoginRequest loginRequest, HttpSession session) {
+        var employee = employeesRepository.findByEmail(loginRequest.email())
+                .orElseThrow(() -> new NotFoundException("Email or password invalid."));
 
         if (!"123".equals(loginRequest.password())) {
-            throw new ResourceNotFoundException("Email or password invalid.");
+            throw new NotFoundException("Email or password invalid.");
         }
+
+        session.setAttribute("employeeId", employee.getId());
 
         return new LoginResponse(employee.getId(), employee.getName(), employee.getEmail(), employee.getRole().name());
     }
