@@ -1,6 +1,8 @@
 package br.com.challenge.employee_checkin.services;
 
+import br.com.challenge.employee_checkin.annotations.ValidateRole;
 import br.com.challenge.employee_checkin.dto.CheckResponse;
+import br.com.challenge.employee_checkin.enums.RoleEnum;
 import br.com.challenge.employee_checkin.exceptions.ConflictException;
 import br.com.challenge.employee_checkin.exceptions.UnauthorizedException;
 import br.com.challenge.employee_checkin.models.WorkRecords;
@@ -20,6 +22,7 @@ public class WorkService {
     @Autowired
     private WorkRepository workRepository;
 
+    @ValidateRole({RoleEnum.USER, RoleEnum.ADMIN})
     public CheckResponse checkIn(HttpSession session) {
         Long employeeId = getEmployeeId(session);
 
@@ -39,6 +42,7 @@ public class WorkService {
 
     }
 
+    @ValidateRole({RoleEnum.USER, RoleEnum.ADMIN})
     public CheckResponse checkOut(HttpSession session) {
         Long employeeId = getEmployeeId(session);
 
@@ -61,7 +65,7 @@ public class WorkService {
         return new CheckResponse(true);
     }
 
-    public Long getEmployeeId(HttpSession session) {
+    private Long getEmployeeId(HttpSession session) {
         Long employeeId = (Long) session.getAttribute("employeeId");
 
         if (employeeId == null) {
@@ -71,6 +75,7 @@ public class WorkService {
         return employeeId;
     }
 
+    @ValidateRole(RoleEnum.ADMIN)
     public Page<WorkRecords> getWorkRecords(String name, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable) {
         return workRepository.getWorkRecords(name, startDate, endDate, pageable);
     }

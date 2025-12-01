@@ -1,5 +1,6 @@
 package br.com.challenge.employee_checkin.services;
 
+import br.com.challenge.employee_checkin.exceptions.ConflictException;
 import br.com.challenge.employee_checkin.exceptions.NotFoundException;
 import br.com.challenge.employee_checkin.dto.LoginRequest;
 import br.com.challenge.employee_checkin.dto.LoginResponse;
@@ -29,5 +30,15 @@ public class EmployeesService {
         session.setAttribute("employeeId", employee.getId());
 
         return new LoginResponse(employee.getId(), employee.getName(), employee.getEmail(), employee.getRole().name());
+    }
+
+    public void logout(HttpSession session) {
+        Long employeeId = (Long) session.getAttribute("employeeId");
+
+        if (employeeId == null) {
+            throw new ConflictException("You are not logged in. Please log in.");
+        }
+
+        session.setAttribute("employeeId", null);
     }
 }

@@ -18,7 +18,7 @@ public interface WorkRepository extends JpaRepository<WorkRecords, Long> {
             SELECT w.*
             FROM work_records w
             INNER JOIN employees e ON w.employee_id = e.id
-            WHERE LOWER(e.name) LIKE LOWER(COALESCE(:name, '%'))
+            WHERE LOWER(e.name) LIKE LOWER('%' || COALESCE(:name, '') || '%')
               AND w.checkin_time >= COALESCE(:startDate, '1970-01-01'::timestamp)
               AND w.checkin_time <= COALESCE(:endDate, '9999-12-31'::timestamp)
             ORDER BY w.checkin_time ASC
@@ -27,7 +27,7 @@ public interface WorkRepository extends JpaRepository<WorkRecords, Long> {
             SELECT COUNT(*)
             FROM work_records w
             INNER JOIN employees e ON w.employee_id = e.id
-            WHERE LOWER(e.name) LIKE LOWER(COALESCE(:name, '%'))
+            WHERE LOWER(e.name) LIKE LOWER('%' || COALESCE(:name, '') || '%')
               AND w.checkin_time >= COALESCE(:startDate, '1970-01-01'::timestamp)
               AND w.checkin_time <= COALESCE(:endDate, '9999-12-31'::timestamp)
         """,
@@ -39,5 +39,4 @@ public interface WorkRepository extends JpaRepository<WorkRecords, Long> {
             @Param("endDate") LocalDateTime endDate,
             Pageable pageable
     );
-
 }

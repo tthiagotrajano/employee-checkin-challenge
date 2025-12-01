@@ -21,17 +21,17 @@ public class WorkController {
     @Autowired
     private WorkService workService;
 
-    @PostMapping(value = "/checkin", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/checkin")
     public CheckResponse checkIn(HttpSession session) {
         return workService.checkIn(session);
     }
 
-    @PostMapping(value = "/checkout", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/checkout")
     public CheckResponse checkOut(HttpSession session) {
         return workService.checkOut(session);
     }
 
-    @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/list")
     public Page<WorkRecords> getWorkRecords(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String startDate,
@@ -40,11 +40,11 @@ public class WorkController {
             @RequestParam(defaultValue = "10") int size
     ) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
-        LocalDateTime start = startDate != null ? LocalDateTime.parse(startDate, formatter) : null;
-        LocalDateTime end = endDate != null ? LocalDateTime.parse(endDate, formatter) : null;
+        LocalDateTime startTime = startDate != null ? LocalDateTime.parse(startDate, formatter) : null;
+        LocalDateTime endTime = endDate != null ? LocalDateTime.parse(endDate, formatter) : null;
 
         Pageable pageable = PageRequest.of(page, size);
 
-        return workService.getWorkRecords(name, start, end, pageable);
+        return workService.getWorkRecords(name, startTime, endTime, pageable);
     }
 }
