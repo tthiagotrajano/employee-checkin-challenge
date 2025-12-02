@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: employee-checkin
+  datasource:
+    url: jdbc:postgresql://dpg-d4mgp8e3jp1c739tjag0-a.ohio-postgres.render.com:5432/employee_checkin
+    username: admin
+    password: t8vTeYMC1VfJ7bZfDzeSWhTH45COiRPw
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: false
+logging:
+  level:
+    br.com.challenge: DEBUG
+spring-doc:
+  swagger-ui:
+    use-root-path: true
