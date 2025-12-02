@@ -11,9 +11,9 @@
     </parent>
 
     <groupId>br.com.challenge</groupId>
-    <artifactId>employee-checkin</artifactId>
+    <artifactId>employee-checkin-api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>employee-checkin</name>
+    <name>employee-checkin-api</name>
 
     <properties>
         <java.version>21</java.version>
