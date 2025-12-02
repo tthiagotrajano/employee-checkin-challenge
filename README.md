@@ -1,6 +1,8 @@
 Employee Checkin Challenge
 
-Sistema backend de check-in e check-out de funcionários usando Java Spring Boot.
+Sistema de check-in e check-out de funcionários.
+
+BACKEND (Java Spring Boot)
 
 REQUISITOS:
 - Java 21
@@ -27,10 +29,10 @@ BUILD E EXECUÇÃO LOCAL:
 BUILD E EXECUÇÃO COM DOCKER:
 
 1. Build da imagem Docker:
-   docker build -t employee-checkin:0.0.1-SNAPSHOT .
+   docker build -t checkin-api .
 
 2. Executar o container:
-   docker run -p 8080:8080 employee-checkin:0.0.1-SNAPSHOT
+   docker run -p 8080:8080 checkin-api
 
    A aplicação estará disponível em: http://localhost:8080
 
@@ -44,8 +46,27 @@ DEPLOY NO RENDER:
 - Start Command: não é necessário (o CMD do Dockerfile já executa o JAR)
 - Auto-Deploy: ativar conforme necessidade
 
+FRONTEND (React ou Angular, conforme projeto)
+
+REQUISITOS:
+- Node.js 18+ (instale em https://nodejs.org)
+
+EXECUÇÃO LOCAL:
+
+1. Navegue até o diretório do frontend:
+   cd employee-checkin-frontend  (substitua pelo nome do seu diretório front-end)
+
+2. Instale as dependências:
+   npm install
+
+3. Rodar a aplicação:
+   npm run dev
+
+   A aplicação estará disponível em: http://localhost:5173
+
 OBSERVAÇÕES:
 
-- Certifique-se de que o banco de dados esteja acessível e configurado corretamente.
-- O JAR gerado é um Spring Boot Executable JAR, contendo todas as dependências.
-- Para problemas de build ou deploy, verifique os logs do Maven e Docker.
+- Certifique-se de que o backend esteja rodando antes de iniciar o frontend.
+- Configure corretamente o CORS no backend para permitir requisições do frontend.
+- O JAR gerado do backend é um Spring Boot Executable JAR, contendo todas as dependências.
+- Para problemas de build ou deploy, verifique os logs do Maven, Docker e Node.js.
