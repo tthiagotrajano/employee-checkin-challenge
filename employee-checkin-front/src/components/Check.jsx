@@ -60,7 +60,7 @@ export default function Check() {
       setTimeout(() => {
         setCheckInTime(null);
         setCheckOutTime(null);
-      }, 1000);
+      }, 500);
     } catch (err) {
       console.error(err);
       notifyError("Erro ao realizar check-out!");

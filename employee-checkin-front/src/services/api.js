@@ -1,16 +1,20 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: "https://employee-checkin-api.onrender.com",
+  // baseURL: "http://localhost:8080",
   headers: {
     "Content-Type": "application/json",
-  },
-  withCredentials: true,
+  }
 });
 
 export const loginUser = async (email, password) => {
   try {
-    const response = await api.post("/auth/login", { email, password });
+ const response = await api.post("/auth/login", { email, password });
+    const { token } = response.data;
+
+    localStorage.setItem("jwtToken", token);
+
     return response;
   } catch (error) {
     throw error;
@@ -36,12 +40,8 @@ export const insertCheckout = async () => {
 };
 
 export const logout = async () => {
-  try {
-    const response = await api.post("/auth/logout");
-    return response;
-  } catch (error) {
-    throw error;
-  }
+  localStorage.removeItem("jwtToken");
+  window.location.href = "/";
 };
 
 export const getWorkRecords = async (name = "", startDate = "", endDate = "", page = 0, size = 10) => {
@@ -65,6 +65,14 @@ export const getWorkRecords = async (name = "", startDate = "", endDate = "", pa
     throw error;
   }
 };
+
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("jwtToken");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
 
 api.interceptors.response.use(
   (response) => response,

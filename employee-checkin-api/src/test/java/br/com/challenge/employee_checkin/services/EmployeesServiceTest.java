@@ -7,6 +7,7 @@ import br.com.challenge.employee_checkin.exceptions.ConflictException;
 import br.com.challenge.employee_checkin.exceptions.NotFoundException;
 import br.com.challenge.employee_checkin.models.Employees;
 import br.com.challenge.employee_checkin.repositories.EmployeesRepository;
+import br.com.challenge.employee_checkin.repositories.WorkRepository;
 import br.com.challenge.employee_checkin.services.impl.EmployeesService;
 import jakarta.servlet.http.HttpSession;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,10 +32,13 @@ class EmployeesServiceTest {
     private EmployeesRepository employeesRepository;
 
     @Mock
-    private HttpSession httpSession;
+    private WorkRepository workRepository;
 
     @InjectMocks
     private EmployeesService employeesService;
+
+    @Mock
+    private HttpSession httpSession;
 
     @BeforeEach
     void setUp() {
@@ -45,17 +49,17 @@ class EmployeesServiceTest {
     void loginSuccess() {
         Employees mockEmployee = new Employees();
         mockEmployee.setId(1L);
-        mockEmployee.setName("Employee 01");
-        mockEmployee.setEmail("employee01@grupomoura.com");
-        mockEmployee.setRole(RoleEnum.USER);
+        mockEmployee.setName("Manager");
+        mockEmployee.setEmail("manager@grupomoura.com");
+        mockEmployee.setRole(RoleEnum.ADMIN);
 
         when(employeesRepository.findByEmail(mockEmployee.getEmail())).thenReturn(Optional.of(mockEmployee));
 
-        LoginResponse response = employeesService.login(new LoginRequest(mockEmployee.getEmail(), "123"), httpSession);
+        LoginResponse response = employeesService.login(new LoginRequest(mockEmployee.getEmail(), "123"));
 
         verify(httpSession, times(1)).setAttribute("employeeId", 1L);
         assertNotNull(response);
-        assertEquals("Employee 01", response.name());
+        assertEquals("Manager", response.name());
     }
 
     @Test
@@ -71,7 +75,7 @@ class EmployeesServiceTest {
         LoginRequest wrongPasswordRequest = new LoginRequest(mockEmployee.getEmail(), "1234");
 
         Exception exception = assertThrows(NotFoundException.class, () -> {
-            employeesService.login(wrongPasswordRequest, httpSession);
+            employeesService.login(wrongPasswordRequest);
         });
 
         assertEquals("Email or password invalid.", exception.getMessage());
@@ -91,30 +95,10 @@ class EmployeesServiceTest {
         LoginRequest request = new LoginRequest(mockEmployee.getEmail(), "123");
 
         NotFoundException exception = assertThrows(NotFoundException.class, () -> {
-            employeesService.login(request, httpSession);
+            employeesService.login(request);
         });
 
         assertEquals("Email or password invalid.", exception.getMessage());
         verify(httpSession, never()).setAttribute(anyString(), any());
-    }
-
-    @Test
-    void logoutSuccess() {
-        when(httpSession.getAttribute("employeeId")).thenReturn(1L);
-
-        employeesService.logout(httpSession);
-
-        verify(httpSession, times(1)).setAttribute("employeeId", null);
-    }
-
-    @Test
-    void logoutNotLoggedIn() {
-        when(httpSession.getAttribute("employeeId")).thenReturn(null);
-
-        ConflictException exception = assertThrows(ConflictException.class, () -> {
-            employeesService.logout(httpSession);
-        });
-
-        assertEquals("You are not logged in. Please log in.", exception.getMessage());
     }
 }

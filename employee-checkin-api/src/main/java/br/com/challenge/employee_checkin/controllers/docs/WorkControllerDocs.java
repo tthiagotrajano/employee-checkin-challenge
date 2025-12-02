@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
 public interface WorkControllerDocs {
@@ -25,7 +26,7 @@ public interface WorkControllerDocs {
                     @ApiResponse(responseCode = "500", description = "Erro inesperado")
             }
     )
-    CheckResponse checkIn(HttpSession session);
+    CheckResponse checkIn(@RequestHeader("Authorization") String tokenHeader);
 
     @Operation(
             summary = "Realiza o check-out do usuário logado",
@@ -39,7 +40,7 @@ public interface WorkControllerDocs {
                     @ApiResponse(responseCode = "500", description = "Erro inesperado")
             }
     )
-    CheckResponse checkOut(HttpSession session);
+    CheckResponse checkOut(@RequestHeader("Authorization") String tokenHeader);
 
     @Operation(
             summary = "Lista registros de trabalho com filtros opcionais",
@@ -60,6 +61,7 @@ public interface WorkControllerDocs {
             @RequestParam(required = false) String startDate,
             @RequestParam(required = false) String endDate,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
+            @RequestParam(defaultValue = "10") int size,
+            @RequestHeader("Authorization") String tokenHeader
     );
 }

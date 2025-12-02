@@ -19,15 +19,8 @@ public class AuthController implements AuthControllerDocs {
 
     @Override
     @PostMapping(value = "/login")
-    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest, HttpSession session) {
-        LoginResponse loginResponse = employeesService.login(loginRequest, session);
+    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
+        LoginResponse loginResponse = employeesService.login(loginRequest);
         return ResponseEntity.ok(loginResponse);
-    }
-
-    @Override
-    @PostMapping(value = "/logout")
-    public ResponseEntity<Void> logout(HttpSession session) {
-        employeesService.logout(session);
-        return ResponseEntity.noContent().build();
     }
 }

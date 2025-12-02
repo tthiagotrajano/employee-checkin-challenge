@@ -47,14 +47,5 @@ public interface AuthControllerDocs {
                     @ApiResponse(responseCode = "500", description = "Erro inesperado")
             }
     )
-    ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest, HttpSession session);
-
-    @Operation(
-            summary = "Finaliza a sessão do usuário autenticado",
-            responses = {
-                    @ApiResponse(responseCode = "204", description = "Logout realizado com sucesso"),
-                    @ApiResponse(responseCode = "401", description = "Usuário não autenticado")
-            }
-    )
-    ResponseEntity<Void> logout(HttpSession session);
+    ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest);
 }

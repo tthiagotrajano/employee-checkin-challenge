@@ -4,11 +4,12 @@ import br.com.challenge.employee_checkin.annotations.ValidateRole;
 import br.com.challenge.employee_checkin.dtos.CheckResponse;
 import br.com.challenge.employee_checkin.enums.RoleEnum;
 import br.com.challenge.employee_checkin.exceptions.ConflictException;
+import br.com.challenge.employee_checkin.exceptions.UnauthorizedException;
 import br.com.challenge.employee_checkin.models.WorkRecords;
 import br.com.challenge.employee_checkin.repositories.WorkRepository;
 import br.com.challenge.employee_checkin.dtos.WorkRecordReport;
+import br.com.challenge.employee_checkin.security.JwtUtils;
 import br.com.challenge.employee_checkin.services.AbstractService;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,8 +25,14 @@ public class WorkService extends AbstractService {
     private WorkRepository workRepository;
 
     @ValidateRole({RoleEnum.USER, RoleEnum.ADMIN})
-    public CheckResponse checkIn(HttpSession session) {
-        Long employeeId = getEmployeeId();
+    public CheckResponse checkIn(String tokenHeader) {
+        String token = tokenHeader.replace("Bearer ", "");
+
+        if (!JwtUtils.validateToken(token)) {
+            throw new UnauthorizedException("You are not logged in. Please log in.");
+        }
+
+        Long employeeId = JwtUtils.getEmployeeId(token);
 
         WorkRecords lastWorkRecord = workRepository.findTopByEmployeeIdAndCheckOutTimeIsNullOrderByCheckInTimeDesc(employeeId);
 
@@ -44,8 +51,14 @@ public class WorkService extends AbstractService {
     }
 
     @ValidateRole({RoleEnum.USER, RoleEnum.ADMIN})
-    public CheckResponse checkOut(HttpSession session) {
-        Long employeeId = getEmployeeId();
+    public CheckResponse checkOut(String tokenHeader) {
+        String token = tokenHeader.replace("Bearer ", "");
+
+        if (!JwtUtils.validateToken(token)) {
+            throw new UnauthorizedException("You are not logged in. Please log in.");
+        }
+
+        Long employeeId = JwtUtils.getEmployeeId(token);
 
         WorkRecords lastWorkRecord = workRepository.findTopByEmployeeIdAndCheckOutTimeIsNullOrderByCheckInTimeDesc(employeeId);
 
@@ -67,7 +80,8 @@ public class WorkService extends AbstractService {
     }
 
     @ValidateRole({RoleEnum.ADMIN, RoleEnum.USER})
-    public Page<WorkRecordReport> getWorkRecords(String name, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable) {
-        return workRepository.getWorkRecords(name, startDate, endDate, getEmployeeRole(), getEmployeeId(), pageable);
+    public Page<WorkRecordReport> getWorkRecords(String name, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable, String tokenHeader) {
+        String token = tokenHeader.replace("Bearer ", "");
+        return workRepository.getWorkRecords(name, startDate, endDate, getEmployeeRole(token), getEmployeeId(token), pageable);
     }
 }
