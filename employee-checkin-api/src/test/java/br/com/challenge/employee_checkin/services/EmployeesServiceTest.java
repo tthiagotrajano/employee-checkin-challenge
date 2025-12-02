@@ -3,13 +3,11 @@ package br.com.challenge.employee_checkin.services;
 import br.com.challenge.employee_checkin.dtos.LoginRequest;
 import br.com.challenge.employee_checkin.dtos.LoginResponse;
 import br.com.challenge.employee_checkin.enums.RoleEnum;
-import br.com.challenge.employee_checkin.exceptions.ConflictException;
 import br.com.challenge.employee_checkin.exceptions.NotFoundException;
 import br.com.challenge.employee_checkin.models.Employees;
 import br.com.challenge.employee_checkin.repositories.EmployeesRepository;
 import br.com.challenge.employee_checkin.repositories.WorkRepository;
 import br.com.challenge.employee_checkin.services.impl.EmployeesService;
-import jakarta.servlet.http.HttpSession;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -37,9 +35,6 @@ class EmployeesServiceTest {
     @InjectMocks
     private EmployeesService employeesService;
 
-    @Mock
-    private HttpSession httpSession;
-
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -57,7 +52,6 @@ class EmployeesServiceTest {
 
         LoginResponse response = employeesService.login(new LoginRequest(mockEmployee.getEmail(), "123"));
 
-        verify(httpSession, times(1)).setAttribute("employeeId", 1L);
         assertNotNull(response);
         assertEquals("Manager", response.name());
     }
@@ -79,7 +73,6 @@ class EmployeesServiceTest {
         });
 
         assertEquals("Email or password invalid.", exception.getMessage());
-        verify(httpSession, never()).setAttribute(anyString(), any());
     }
 
     @Test
@@ -99,6 +92,5 @@ class EmployeesServiceTest {
         });
 
         assertEquals("Email or password invalid.", exception.getMessage());
-        verify(httpSession, never()).setAttribute(anyString(), any());
     }
 }
