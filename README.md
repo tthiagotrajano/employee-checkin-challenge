@@ -27,10 +27,10 @@ BUILD E EXECUÇÃO LOCAL:
 BUILD E EXECUÇÃO COM DOCKER:
 
 1. Build da imagem Docker:
-   docker build -t checkin-api .
+   docker build -t employee-checkin:0.0.1-SNAPSHOT .
 
 2. Executar o container:
-   docker run -p 8080:8080 checkin-api
+   docker run -p 8080:8080 employee-checkin:0.0.1-SNAPSHOT
 
    A aplicação estará disponível em: http://localhost:8080
 
