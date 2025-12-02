@@ -4,7 +4,6 @@ import br.com.challenge.employee_checkin.controllers.docs.AuthControllerDocs;
 import br.com.challenge.employee_checkin.dtos.LoginRequest;
 import br.com.challenge.employee_checkin.dtos.LoginResponse;
 import br.com.challenge.employee_checkin.services.impl.EmployeesService;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
