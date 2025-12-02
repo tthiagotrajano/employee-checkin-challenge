@@ -4,7 +4,6 @@ import br.com.challenge.employee_checkin.controllers.docs.WorkControllerDocs;
 import br.com.challenge.employee_checkin.dtos.CheckResponse;
 import br.com.challenge.employee_checkin.dtos.WorkRecordReport;
 import br.com.challenge.employee_checkin.services.impl.WorkService;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

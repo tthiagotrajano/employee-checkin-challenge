@@ -95,7 +95,7 @@
 .report-table th,
 .report-table td {
   padding: 12px 8px;
-  text-align: center; /* valores centralizados */
+  text-align: center;
   border: 1px solid #ddd;
 }
 
@@ -156,19 +156,32 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 200px; /* altura para centralizar dentro da tabela */
+  height: 200px;
   font-size: 18px;
   font-weight: 500;
-  color: #000000; /* cor destaque */
+  color: #000000;
 }
 
 .date-filters {
   display: flex;
-  gap: 1rem; /* espaço entre os filtros */
+  gap: 1rem;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .filter-item label {
   margin-right: 0.5rem;
   font-weight: bold;
+}
+
+@media (max-width: 600px) {
+  .date-filters {
+    flex-direction: column;
+    align-items: flex-start; 
+    gap: 0.5rem; 
+  }
+
+  .filter-item label {
+    margin-right: 0;
+  }
 }
