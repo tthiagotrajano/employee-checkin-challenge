@@ -1,0 +1,142 @@
+.check-page {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  font-family: 'Arial', sans-serif;
+}
+
+.check-card {
+  background-color: rgba(255, 255, 255, 0.98);
+  padding: 3rem 2.5rem;
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  width: 450px;
+  max-width: 90%;
+}
+
+.check-card h2 {
+  margin-bottom: 2.5rem;
+  font-size: 1.8rem;
+  color: #333;
+  font-weight: 600;
+}
+
+.check-buttons-row {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.check-button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.btn-checkin,
+.btn-checkout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.2rem;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  min-width: 140px;
+  transition: transform 0.1s, box-shadow 0.1s, background-color 0.2s;
+  font-size: 1rem;
+}
+
+.btn-checkin {
+  background-color: #007bff;
+}
+
+.btn-checkin:hover:not(:disabled) {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.btn-checkout {
+  background-color: #dc3545;
+}
+
+.btn-checkout:hover:not(:disabled) {
+  background-color: #a71d2a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.btn-checkin:disabled,
+.btn-checkout:disabled {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.icon-btn {
+  font-size: 1.2rem;
+}
+
+.btn-report {
+  background-color: #28a745;
+  width: 100%;
+  padding: 0.9rem;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: transform 0.1s, box-shadow 0.1s, background-color 0.2s;
+}
+
+.btn-report:hover {
+  background-color: #1e7e34;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+@media (max-width: 500px) {
+  .check-buttons-row {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .btn-checkin,
+  .btn-checkout {
+    width: 100%;
+  }
+}
+
+.btn-logout {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #ff4d4f;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.btn-logout:disabled {
+  background-color: #d9d9d9;
+  cursor: not-allowed;
+}
+

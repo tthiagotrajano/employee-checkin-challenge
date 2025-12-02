@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+
+  backend:
+    build: ./employee-checkin-api
+    container_name: employee_backend
+    restart: always
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://dpg-d4mgp8e3jp1c739tjag0-a.ohio-postgres.render.com:5432/employee_checkin
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: t8vTeYMC1VfJ7bZfDzeSWhTH45COiRPw
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build: ./employee-checkin-front
+    container_name: employee_frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
