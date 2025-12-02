@@ -1,12 +1,13 @@
-package br.com.challenge.employee_checkin.services;
+package br.com.challenge.employee_checkin.services.impl;
 
 import br.com.challenge.employee_checkin.annotations.ValidateRole;
-import br.com.challenge.employee_checkin.dto.CheckResponse;
+import br.com.challenge.employee_checkin.dtos.CheckResponse;
 import br.com.challenge.employee_checkin.enums.RoleEnum;
 import br.com.challenge.employee_checkin.exceptions.ConflictException;
-import br.com.challenge.employee_checkin.exceptions.UnauthorizedException;
 import br.com.challenge.employee_checkin.models.WorkRecords;
 import br.com.challenge.employee_checkin.repositories.WorkRepository;
+import br.com.challenge.employee_checkin.dtos.WorkRecordReport;
+import br.com.challenge.employee_checkin.services.AbstractService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,14 +18,14 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Service
-public class WorkService {
+public class WorkService extends AbstractService {
 
     @Autowired
     private WorkRepository workRepository;
 
     @ValidateRole({RoleEnum.USER, RoleEnum.ADMIN})
     public CheckResponse checkIn(HttpSession session) {
-        Long employeeId = getEmployeeId(session);
+        Long employeeId = getEmployeeId();
 
         WorkRecords lastWorkRecord = workRepository.findTopByEmployeeIdAndCheckOutTimeIsNullOrderByCheckInTimeDesc(employeeId);
 
@@ -44,7 +45,7 @@ public class WorkService {
 
     @ValidateRole({RoleEnum.USER, RoleEnum.ADMIN})
     public CheckResponse checkOut(HttpSession session) {
-        Long employeeId = getEmployeeId(session);
+        Long employeeId = getEmployeeId();
 
         WorkRecords lastWorkRecord = workRepository.findTopByEmployeeIdAndCheckOutTimeIsNullOrderByCheckInTimeDesc(employeeId);
 
@@ -65,18 +66,8 @@ public class WorkService {
         return new CheckResponse(true);
     }
 
-    private Long getEmployeeId(HttpSession session) {
-        Long employeeId = (Long) session.getAttribute("employeeId");
-
-        if (employeeId == null) {
-            throw new UnauthorizedException("Access denied. Please login.");
-        }
-
-        return employeeId;
-    }
-
-    @ValidateRole(RoleEnum.ADMIN)
-    public Page<WorkRecords> getWorkRecords(String name, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable) {
-        return workRepository.getWorkRecords(name, startDate, endDate, pageable);
+    @ValidateRole({RoleEnum.ADMIN, RoleEnum.USER})
+    public Page<WorkRecordReport> getWorkRecords(String name, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable) {
+        return workRepository.getWorkRecords(name, startDate, endDate, getEmployeeRole(), getEmployeeId(), pageable);
     }
 }
