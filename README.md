@@ -70,3 +70,9 @@ OBSERVAÇÕES:
 - Configure corretamente o CORS no backend para permitir requisições do frontend.
 - O JAR gerado do backend é um Spring Boot Executable JAR, contendo todas as dependências.
 - Para problemas de build ou deploy, verifique os logs do Maven, Docker e Node.js.
+
+TESTE:
+
+Usuários criados: manager@grupomoura.com, employee01@grupomoura.com e employee02@grupomoura.com
+
+Senha padrão: 123
