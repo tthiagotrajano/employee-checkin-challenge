@@ -8,7 +8,7 @@ REQUISITOS:
 - Java 21
 - Maven 3.9+
 - Docker
-- Banco de dados PostgreSQL (ou outro configurado no application.yaml)
+- Banco de dados PostgreSQL
 
 BUILD E EXECUÇÃO LOCAL:
 
